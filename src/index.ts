@@ -52,7 +52,6 @@ app.post('/videos', (req: Request, res: Response) => {
         })
         return;
     }
-
     const newVideo = {
         "id": +(new Date()),
         "title": req.body.title,
@@ -111,6 +110,15 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         }
 })
 
+app.delete('/videos/:videoId', (req: Request, res: Response) => {
+    const video = videos.find(i => i.id === +(req.params.videoId))
+    if (newVideos.lenght < videos.lenght) {
+        videos = newVideos
+        res.send(204)
+    } else {
+        res.send(404)
+    }
+})
 
 
 app.listen(port, () => {
