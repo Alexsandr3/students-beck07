@@ -81,18 +81,15 @@ app.post('/videos', (req: Request, res: Response) => {
 })
 
 app.get('/videos/:videoId', (req: Request, res: Response) => {
-    if (!req.params.videoId){
-        res.sendStatus(404)
-        return;
-    }
+
     const video = videos.find(v => v.id === +req.params.videoId)
-    if (video) {
-        res.send(video)
-        return;
-    } else {
+
+    if (!video){
         res.sendStatus(404)
         return;
     }
+
+    res.send(video)
 })
 
 app.put('/videos/:videoId', (req: Request, res: Response) => {
@@ -105,11 +102,6 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     let minAgeRestriction = req.body.minAgeRestriction
     let publicationDate = req.body.publicationDate
     let availableResolutions = req.body.availableResolutions
-
-    if (!req.params.videoId){
-        res.sendStatus(404)
-        return;
-    }
 
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
         error.errorsMessages.push({
@@ -163,7 +155,13 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     }
 
     const video = videos.find(v => v.id === +(req.params.videoId))
-    if (video) {
+
+    if (!video){
+        res.sendStatus(404)
+        return;
+    }
+
+
         video.title = req.body.title;
         video.author = req.body.author;
         video.canBeDownloaded = req.body.canBeDownloaded;
@@ -173,30 +171,20 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         video.availableResolutions = req.body.availableResolutions;
 
         res.sendStatus(204)
-        return;
-    } else {
-        res.sendStatus(404)
-        return;
-    }
-
 })
 
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
     const id = +req.params.videoId;
 
-    if (!id){
+    const newVideos = videos.find(v => v.id === id)
+
+    if (!newVideos){
         res.sendStatus(404)
         return;
     }
-    const newVideos =videos.filter(v => v.id !== id)
-    if (newVideos.length < videos.length){
-        videos = newVideos
-        res.send(204)
-        return;
-    } else {
-        res.status(404)
-        return;
-    }
+
+    videos = newVideos
+    res.send(204)
 })
 
 app.listen(port, () => {
