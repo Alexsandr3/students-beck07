@@ -123,7 +123,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             "field": "minAgeRestriction"
         })
     }
-    if (!publicationDate || typeof publicationDate !== new Date().toISOString() || !publicationDate.trim()){
+    if (typeof publicationDate !== 'string'){
         error.errorsMessages.push({
             "message": "Incorrect publicationDate",
             "field": "publicationDate"
