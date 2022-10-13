@@ -89,6 +89,7 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
         return;
     }
 
+
     res.send(video)
 })
 
