@@ -167,7 +167,6 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         video.author = req.body.author;
         video.canBeDownloaded = req.body.canBeDownloaded;
         video.minAgeRestriction = req.body.minAgeRestriction;
-        video.createdAt = req.body.createdAt;
         video.publicationDate = req.body.publicationDate;
         video.availableResolutions = req.body.availableResolutions;
 
