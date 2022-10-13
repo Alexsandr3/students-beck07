@@ -94,6 +94,8 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     }
     let title = req.body.title
     let author = req.body.author
+    let canBeDownloaded = req.body.canBeDownloaded
+    let minAgeRestriction = req.body.minAgeRestriction
     let availableResolutions = req.body.availableResolutions
 
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
@@ -108,7 +110,18 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             "field": "author"
         })
     }
-
+    if (canBeDownloaded == true){
+        error.errorsMessages.push({
+            "message": "Incorrect canBeDownloaded",
+            "field": "canBeDownloaded"
+        })
+    }
+    if (minAgeRestriction > 18 || minAgeRestriction < 1){
+        error.errorsMessages.push({
+            "message": "Incorrect canBeDownloaded",
+            "field": "canBeDownloaded"
+        })
+    }
     if (availableResolutions){
         if(!Array.isArray(availableResolutions)){
             error.errorsMessages.push({
