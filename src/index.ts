@@ -89,23 +89,54 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
 })
 
 app.put('/videos/:videoId', (req: Request, res: Response) => {
+    let error: {errorsMessages: any[]} = {
+        errorsMessages: []
+    }
     let title = req.body.title
+    let author = req.body.author
+    let availableResolutions = req.body.availableResolutions
+
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
-        res.status(400).send({
-            errorsMessages: [{
-                "message": "Incorrect title",
-                "field": "title"
-            }]
+        error.errorsMessages.push({
+            "message": "Incorrect title",
+            "field": "title"
         })
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 40){
+        error.errorsMessages.push({
+            "message": "Incorrect author",
+            "field": "author"
+        })
+    }
+
+    if (availableResolutions){
+        if(!Array.isArray(availableResolutions)){
+            error.errorsMessages.push({
+                "message": "Incorrect availableResolutions",
+                "field": "availableResolutions"
+            })
+        } else {
+            availableResolutions.forEach(resolution => {
+                !AvailableResolutions.includes(resolution) && error.errorsMessages.push({
+                    "message": "Incorrect availableResolutions",
+                    "field": "availableResolutions"
+                })
+            })
+        }
+    }
+
+    if (error.errorsMessages.length){
+        res.send(error).status(400)
         return;
     }
+
 
     const video = videos.find(v => v.id === +(req.params.videoId))
     if (video) {
         video.title = req.body.title
         res.status(204).send(video)
     } else {
-        res.sendStatus(400)
+        res.sendStatus(404)
     }
 })
 
