@@ -141,12 +141,14 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
 })
 
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
-    for (let i=0; i< videos.length; i++) {
-       if  (videos[i].id === +req.params.id){
-           videos.splice(i,1);
-       }
+    const id = +req.params.videoId;
+    const newVideos =videos.filter(v => v.id !== id)
+    if (newVideos.length < videos.length){
+        videos = newVideos
+        res.send(204)
+    } else {
+        res.status(404)
     }
-    res.sendStatus(204)
 })
 
 
