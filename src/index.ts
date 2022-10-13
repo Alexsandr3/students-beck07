@@ -160,7 +160,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         video.publicationDate = req.body.publicationDate;
         video.availableResolutions = req.body.availableResolutions;
 
-        res.status(204).send(video)
+        res.sendStatus(204)
     } else {
         res.sendStatus(404)
     }
