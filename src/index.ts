@@ -1,25 +1,11 @@
 import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
 
-
 const app = express()
 const jsonBodyMiddleware = bodyParser.json()
 app.use(jsonBodyMiddleware)
 
-let videos = [{
-        id: 0,
-        title: "string",
-        author: "string",
-        canBeDownloaded: true,
-        minAgeRestriction: null,
-        createdAt: "2022-10-13T10:43:30.747Z",
-        publicationDate: "2022-10-13T10:43:30.747Z",
-        availableResolutions: [
-            "P144"
-        ]
-    }]
-
-
+let videos: any[] = []
 
 const port = process.env.PORT || 5001
 
@@ -30,28 +16,62 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videos)
 })
+
+const AvailableResolutions = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
+
+
 app.post('/videos', (req: Request, res: Response) => {
+    let error: {errorsMessages: any[]} = {
+        errorsMessages: []
+    }
     let title = req.body.title
+    let author = req.body.author
+    let availableResolutions = req.body.availableResolutions
+
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
-        res.status(400).send({
-            errorsMessages: [{
-                    "message": "Incorrect title",
-                    "field": "title"
-                }]
+        error.errorsMessages.push({
+            "message": "Incorrect title",
+            "field": "title"
         })
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 40){
+        error.errorsMessages.push({
+            "message": "Incorrect author",
+            "field": "author"
+        })
+    }
+
+    if (availableResolutions){
+        if(!Array.isArray(availableResolutions)){
+            error.errorsMessages.push({
+                "message": "Incorrect availableResolutions",
+                "field": "availableResolutions"
+            })
+        } else {
+            availableResolutions.forEach(resolution => {
+                !AvailableResolutions.includes(resolution) && error.errorsMessages.push({
+                    "message": "Incorrect availableResolutions",
+                    "field": "availableResolutions"
+                })
+            })
+        }
+    }
+
+    if (error.errorsMessages.length){
+        res.send(error).status(400)
         return;
     }
+
+
     const newVideo = {
-        id: +(new Date()),
-        title: req.body.title,
-        author: "beeBrick",
-        canBeDownloaded: true,
+        id: +(new Date().getTime()),
+        title,
+        author,
+        canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
         publicationDate: new Date().toISOString(),
-        availableResolutions: [
-            "P144"
-        ]
+        availableResolutions
     }
     videos.push(newVideo)
 
@@ -95,6 +115,7 @@ app.delete('/videos/:videoId', (req: Request, res: Response) => {
            videos.splice(i,1);
        }
     }
+    res.sendStatus(204)
 })
 
 
