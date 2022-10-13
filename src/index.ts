@@ -110,7 +110,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             "field": "author"
         })
     }
-    if (canBeDownloaded === true){
+    if (canBeDownloaded === true || typeof canBeDownloaded !== 'string' ){
         error.errorsMessages.push({
             "message": "Incorrect canBeDownloaded",
             "field": "canBeDownloaded"
