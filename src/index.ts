@@ -132,11 +132,19 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
 
     const video = videos.find(v => v.id === +(req.params.videoId))
     if (video) {
-        video.title = req.body.title
+        video.title = req.body.title;
+        video.author = req.body.author;
+        video.canBeDownloaded = req.body.canBeDownloaded;
+        video.minAgeRestriction = req.body.minAgeRestriction;
+        video.createdAt = req.body.createdAt;
+        video.publicationDate = req.body.publicationDate;
+        video.availableResolutions = req.body.availableResolutions;
+
         res.status(204).send(video)
     } else {
         res.sendStatus(404)
     }
+
 })
 
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
