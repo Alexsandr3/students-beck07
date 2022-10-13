@@ -1,35 +1,13 @@
 import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
 
-type videosType = {
-        id: number,
-        title: string,
-        author: string,
-        canBeDownloaded: boolean,
-        minAgeRestriction: null,
-        createdAt: string,
-        publicationDate: string,
-        availableResolutions: string []
-}
 
 const app = express()
 const jsonBodyMiddleware = bodyParser.json()
 app.use(jsonBodyMiddleware)
 
-let videos: videosType[] = [
-    {
-        id: 0,
-        title: "string",
-        author: "string",
-        canBeDownloaded: true,
-        minAgeRestriction: null,
-        createdAt: "2022-10-13T08:30:01.050Z",
-        publicationDate: "2022-10-13T08:30:01.050Z",
-        availableResolutions: [
-            "P144"
-        ]
-    }
-]
+let videos: any []
+    videos = []
 
 const port = process.env.PORT || 5001
 
