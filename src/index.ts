@@ -110,7 +110,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             "field": "author"
         })
     }
-    if (canBeDownloaded == true){
+    if (canBeDownloaded === true){
         error.errorsMessages.push({
             "message": "Incorrect canBeDownloaded",
             "field": "canBeDownloaded"
@@ -118,8 +118,8 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     }
     if (minAgeRestriction > 18 || minAgeRestriction < 1){
         error.errorsMessages.push({
-            "message": "Incorrect canBeDownloaded",
-            "field": "canBeDownloaded"
+            "message": "Incorrect minAgeRestriction",
+            "field": "minAgeRestriction"
         })
     }
     if (availableResolutions){
