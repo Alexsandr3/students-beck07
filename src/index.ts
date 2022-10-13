@@ -1,21 +1,31 @@
 import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
 
+type videosType = {
+        id: number,
+        title: string,
+        author: string,
+        canBeDownloaded: boolean,
+        minAgeRestriction: null,
+        createdAt: string,
+        publicationDate: string,
+        availableResolutions: string []
+}
+
 const app = express()
 const jsonBodyMiddleware = bodyParser.json()
 app.use(jsonBodyMiddleware)
 
-let videos: videosType[]
-videos = [
+let videos: videosType[] = [
     {
-        "id": 0,
-        "title": "string",
-        "author": "string",
-        "canBeDownloaded": true,
-        "minAgeRestriction": null,
-        "createdAt": "2022-10-12T16:47:24.225Z",
-        "publicationDate": "2022-10-12T16:47:24.225Z",
-        "availableResolutions": [
+        id: 0,
+        title: "string",
+        author: "string",
+        canBeDownloaded: true,
+        minAgeRestriction: null,
+        createdAt: "2022-10-13T08:30:01.050Z",
+        publicationDate: "2022-10-13T08:30:01.050Z",
+        availableResolutions: [
             "P144"
         ]
     }
@@ -30,37 +40,16 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videos)
 })
-
 app.post('/videos', (req: Request, res: Response) => {
-   let title = req.body.title
-    if (!title || typeof title !== 'string' || !title.trim() || title.lenght> 40) {
-        res.status(400).send({
-            errorsMessage: [{
-                "message": "Incorrect title",
-                "field": "tilte"
-            }],
-        })
-        return;
-    }
-    let author = req.body.author
-    if (!author || typeof author !== 'string' || !author.trim() || title.lenght> 20) {
-        res.status(400).send({
-            errorsMessage: [{
-                "message": "Incorrect author",
-                "field": "author"
-            }],
-        })
-        return;
-    }
     const newVideo = {
-        "id": +(new Date()),
-        "title": req.body.title,
-        "author": "beeBrick",
-        "canBeDownloaded": true,
-        "minAgeRestriction": null,
-        "createdAt": new Date().toISOString(),
-        "publicationDate": new Date().toISOString(),
-        "availableResolutions": [
+        id: +(new Date()),
+        title: req.body.title,
+        author: "beeBrick",
+        canBeDownloaded: true,
+        minAgeRestriction: null,
+        createdAt: new Date().toISOString(),
+        publicationDate: new Date().toISOString(),
+        availableResolutions: [
             "P144"
         ]
     }
@@ -70,55 +59,53 @@ app.post('/videos', (req: Request, res: Response) => {
 })
 
 app.get('/videos/:videoId', (req: Request, res: Response) => {
-    const video = videos.find(i => i.id === +(req.params.videoId))
+    const video = videos.find(v => v.id === +req.params.videoId)
     if (video) {
         res.send(video)
     } else {
         res.sendStatus(404)
     }
-    return;
 })
 
 app.put('/videos/:videoId', (req: Request, res: Response) => {
     let title = req.body.title
-    if (!title || typeof title !== 'string' || !title.trim() || title.lenght> 40) {
+    if (!title || typeof title !== 'string' || !title.trim() || title.length> 40) {
         res.status(400).send({
             errorsMessage: [{
-                "message": "Incorrect title",
-                "field": "tilte"
+                message: "Incorrect title",
+                field: "tilte"
             }],
         })
         return;
     }
     let author = req.body.author
-    if (!author || typeof author !== 'string' || !author.trim() || title.lenght> 20) {
+    if (!author || typeof author !== 'string' || !author.trim() || title.length> 20) {
         res.status(400).send({
             errorsMessage: [{
-                "message": "Incorrect author",
-                "field": "author"
+                message: "Incorrect author",
+                field: "author"
             }],
         })
         return;
     }
 
-        const video = videos.find(i => i.id === +(req.params.videoId))
-        if (video) {
-            video.title = req.body.title
-            res.status(204).send(video)
-        } else {
-            res.send(400)
-        }
+    const video = videos.find(v => v.id === +(req.params.videoId))
+    if (video) {
+        video.title = req.body.title
+        res.status(204).send(video)
+    } else {
+        res.sendStatus(400)
+    }
 })
 
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
-    const video = videos.find(i => i.id === +(req.params.videoId))
-    if (newVideos.lenght < videos.lenght) {
-        videos = newVideos
-        res.send(204)
-    } else {
-        res.send(404)
+    for (let i=0; i< videos.length; i++) {
+       if  (videos[i].id === +req.params.id){
+           videos.splice(i,1);
+       }
     }
 })
+
 
 
 app.listen(port, () => {
