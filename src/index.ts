@@ -60,6 +60,8 @@ app.post('/videos', (req: Request, res: Response) => {
         res.send(error).status(400)
         return;
     }
+    let createdAt = new Date().toISOString()
+    let publicationDate = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
 
     const newVideo = {
         id: +(new Date().getTime()),
@@ -67,8 +69,8 @@ app.post('/videos', (req: Request, res: Response) => {
         author,
         canBeDownloaded: false,
         minAgeRestriction: null,
-        createdAt: new Date().toISOString(),
-        publicationDate: new Date().toISOString(),
+        createdAt,
+        publicationDate,
         availableResolutions
     }
     videos.push(newVideo)
