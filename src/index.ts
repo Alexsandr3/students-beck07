@@ -7,14 +7,14 @@ const jsonBodyMiddleware = bodyParser.json()
 app.use(jsonBodyMiddleware)
 
 let videos = [{
-        "id": 0,
-        "title": "string",
-        "author": "string",
-        "canBeDownloaded": true,
-        "minAgeRestriction": null,
-        "createdAt": "2022-10-13T10:43:30.747Z",
-        "publicationDate": "2022-10-13T10:43:30.747Z",
-        "availableResolutions": [
+        id: 0,
+        title: "string",
+        author: "string",
+        canBeDownloaded: true,
+        minAgeRestriction: null,
+        createdAt: "2022-10-13T10:43:30.747Z",
+        publicationDate: "2022-10-13T10:43:30.747Z",
+        availableResolutions: [
             "P144"
         ]
     }]
