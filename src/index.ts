@@ -61,7 +61,9 @@ app.post('/videos', (req: Request, res: Response) => {
         return;
     }
     let createdAt = new Date().toISOString()
-    let publicationDate = new Date(Date.now() + (3600 * 1000 * 24)).toISOString()
+    let date = new Date()
+    date.setDate(date.getDate() + 1)
+    let publicationDate = date.toISOString()
 
     const newVideo = {
         id: +(new Date().getTime()),
@@ -79,9 +81,14 @@ app.post('/videos', (req: Request, res: Response) => {
 })
 
 app.get('/videos/:videoId', (req: Request, res: Response) => {
+    if (!req.params.videoId){
+        res.sendStatus(404)
+        return;
+    }
     const video = videos.find(v => v.id === +req.params.videoId)
     if (video) {
         res.send(video)
+        return;
     } else {
         res.sendStatus(404)
         return;
@@ -98,6 +105,11 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     let minAgeRestriction = req.body.minAgeRestriction
     let publicationDate = req.body.publicationDate
     let availableResolutions = req.body.availableResolutions
+
+    if (!req.params.videoId){
+        res.sendStatus(404)
+        return;
+    }
 
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
         error.errorsMessages.push({
@@ -161,20 +173,29 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         video.availableResolutions = req.body.availableResolutions;
 
         res.sendStatus(204)
+        return;
     } else {
         res.sendStatus(404)
+        return;
     }
 
 })
 
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
     const id = +req.params.videoId;
+
+    if (!id){
+        res.sendStatus(404)
+        return;
+    }
     const newVideos =videos.filter(v => v.id !== id)
     if (newVideos.length < videos.length){
         videos = newVideos
         res.send(204)
+        return;
     } else {
         res.status(404)
+        return;
     }
 })
 
