@@ -96,6 +96,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     let author = req.body.author
     let canBeDownloaded = req.body.canBeDownloaded
     let minAgeRestriction = req.body.minAgeRestriction
+    let publicationDate = req.body.publicationDate
     let availableResolutions = req.body.availableResolutions
 
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40){
@@ -120,6 +121,12 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         error.errorsMessages.push({
             "message": "Incorrect minAgeRestriction",
             "field": "minAgeRestriction"
+        })
+    }
+    if (publicationDate !== new Date().toISOString()){
+        error.errorsMessages.push({
+            "message": "Incorrect publicationDate",
+            "field": "publicationDate"
         })
     }
     if (availableResolutions){
