@@ -57,7 +57,7 @@ app.post('/videos', (req: Request, res: Response) => {
     }
 
     if (error.errorsMessages.length){
-        res.send(error).status(400)
+        res.status(400).send(error)
         return;
     }
     let createdAt = new Date().toISOString()
@@ -126,7 +126,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     }
 
     if (error.errorsMessages.length){
-        res.send(error).status(400)
+        res.status(400).send(error)
         return;
     }
 
