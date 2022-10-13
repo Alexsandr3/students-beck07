@@ -7,6 +7,8 @@ app.use(jsonBodyMiddleware)
 
 let videos: any[] = []
 
+const AvailableResolutions = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
+
 const port = process.env.PORT || 5001
 
 app.get('/', (req: Request, res: Response) => {
@@ -16,9 +18,6 @@ app.get('/', (req: Request, res: Response) => {
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videos)
 })
-
-const AvailableResolutions = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
-
 
 app.post('/videos', (req: Request, res: Response) => {
     let error: {errorsMessages: any[]} = {
@@ -61,7 +60,6 @@ app.post('/videos', (req: Request, res: Response) => {
         res.send(error).status(400)
         return;
     }
-
 
     const newVideo = {
         id: +(new Date().getTime()),
@@ -129,7 +127,6 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         res.send(error).status(400)
         return;
     }
-
 
     const video = videos.find(v => v.id === +(req.params.videoId))
     if (video) {
