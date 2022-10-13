@@ -184,7 +184,7 @@ app.delete('/videos/:videoId', (req: Request, res: Response) => {
         return;
     }
 
-    videos = newVideos
+    videos = videos.filter( v => v.id !== id)
     res.send(204)
 })
 
