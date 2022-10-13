@@ -188,6 +188,12 @@ app.delete('/videos/:videoId', (req: Request, res: Response) => {
     res.send(204)
 })
 
+app.delete('/testing/all-data', (req: Request, res: Response) => {
+
+    videos = []
+    res.send(204)
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
