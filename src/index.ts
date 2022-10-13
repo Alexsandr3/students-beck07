@@ -34,7 +34,7 @@ app.post('/videos', (req: Request, res: Response) => {
             "field": "title"
         })
     }
-    if (!author || typeof author !== 'string' || !author.trim() || author.length > 40){
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20){
         error.errorsMessages.push({
             "message": "Incorrect author",
             "field": "author"
@@ -102,7 +102,7 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             "field": "title"
         })
     }
-    if (!author || typeof author !== 'string' || !author.trim() || author.length > 40){
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20){
         error.errorsMessages.push({
             "message": "Incorrect author",
             "field": "author"
