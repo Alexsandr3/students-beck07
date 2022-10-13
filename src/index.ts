@@ -90,6 +90,17 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             }],
         })
         return;
+    }
+    let author = req.body.author
+    if (!author || typeof author !== 'string' || !author.trim() || title.lenght> 20) {
+        res.status(400).send({
+            errorsMessage: [{
+                "message": "Incorrect author",
+                "field": "author"
+            }],
+        })
+        return;
+    }
 
         const video = videos.find(i => i.id === +(req.params.videoId))
         if (video) {
