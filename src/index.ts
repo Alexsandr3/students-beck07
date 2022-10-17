@@ -5,7 +5,7 @@ const app = express()
 const jsonBodyMiddleware = bodyParser.json()
 app.use(jsonBodyMiddleware)
 
-//fdf
+//fdffdsf
 let videos: any[] = []
 
 const AvailableResolutions = ['P144', 'P240', 'P360', 'P480', 'P720', 'P1080', 'P1440', 'P2160']
@@ -15,11 +15,9 @@ const port = process.env.PORT || 5001
 app.get('/', (req: Request, res: Response) => {
     res.send("Hi, need or greed!")
 })
-
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videos)
 })
-
 app.post('/videos', (req: Request, res: Response) => {
     let error: {errorsMessages: any[]} = {
         errorsMessages: []
@@ -40,7 +38,6 @@ app.post('/videos', (req: Request, res: Response) => {
             "field": "author"
         })
     }
-
     if (availableResolutions){
         if(!Array.isArray(availableResolutions)){
             error.errorsMessages.push({
@@ -56,7 +53,6 @@ app.post('/videos', (req: Request, res: Response) => {
             })
         }
     }
-
     if (error.errorsMessages.length){
         res.status(400).send(error)
         return;
@@ -77,22 +73,17 @@ app.post('/videos', (req: Request, res: Response) => {
         availableResolutions
     }
     videos.push(newVideo)
-
     res.status(201).send(newVideo)
 })
-
 app.get('/videos/:videoId', (req: Request, res: Response) => {
 
     const video = videos.find(v => v.id === +req.params.videoId)
-
     if (!video){
         res.sendStatus(404)
         return;
     }
-
     res.send(video)
 })
-
 app.put('/videos/:videoId', (req: Request, res: Response) => {
     let error: {errorsMessages: any[]} = {
         errorsMessages: []
@@ -149,20 +140,15 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
             })
         }
     }
-
     if (error.errorsMessages.length){
         res.status(400).send(error)
         return;
     }
-
     const video = videos.find(v => v.id === +(req.params.videoId))
-
     if (!video){
         res.sendStatus(404)
         return;
     }
-
-
         video.title = req.body.title;
         video.author = req.body.author;
         video.canBeDownloaded = req.body.canBeDownloaded;
@@ -172,27 +158,20 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
 
         res.sendStatus(204)
 })
-
 app.delete('/videos/:videoId', (req: Request, res: Response) => {
     const id = +req.params.videoId;
-
     const newVideos = videos.find(v => v.id === id)
-
     if (!newVideos){
         res.sendStatus(404)
         return;
     }
-
     videos = videos.filter( v => v.id !== id)
     res.send(204)
 })
-
 app.delete('/testing/all-data', (req: Request, res: Response) => {
-
     videos = []
     res.send(204)
 })
-
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
